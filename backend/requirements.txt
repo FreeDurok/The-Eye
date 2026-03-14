@@ -1,0 +1,23 @@
+# Web framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+
+# Validation & settings
+pydantic==2.10.3
+pydantic-settings==2.7.0
+
+# HTTP client (used by OSINT modules)
+httpx==0.28.1
+
+# Export formats
+openpyxl==3.1.5
+
+# Multipart form data (file uploads)
+python-multipart==0.0.20
+
+# Environment
+python-dotenv==1.0.1
