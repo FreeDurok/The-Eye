@@ -1,11 +1,11 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_db
 from app.schemas.query import QueryListOut, QueryRecordOut, QueryRequest
-from app.services import query_service
+from app.services import import_service, query_service
 
 router = APIRouter()
 
@@ -14,6 +14,25 @@ router = APIRouter()
 async def run_query(request: QueryRequest, db: AsyncSession = Depends(get_db)):
     try:
         return await query_service.run_query(request, db)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+
+@router.post("/import", response_model=QueryRecordOut, status_code=201)
+async def import_file(
+    file: UploadFile = File(...),
+    query: str = Form(...),
+    module: str | None = Form(None),
+    case_id: uuid.UUID | None = Form(None),
+    db: AsyncSession = Depends(get_db),
+):
+    raw = await file.read()
+    if len(raw) > 100_000_000:
+        raise HTTPException(status_code=413, detail="File too large (max 100MB)")
+    try:
+        return await import_service.import_file(
+            raw, file.filename or "upload", module, query, case_id, db
+        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 
