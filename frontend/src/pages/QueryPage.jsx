@@ -26,6 +26,8 @@ import { listCases } from "../api/cases.js";
 import { listModules } from "../api/modules.js";
 import { listQueries, runQuery } from "../api/queries.js";
 import useUiStore from "../store/uiStore.js";
+import PageHeader from "../components/common/PageHeader.jsx";
+import SearchIcon from "@mui/icons-material/SearchOutlined";
 
 const MONO = "'IBM Plex Mono', monospace";
 
@@ -112,6 +114,7 @@ export default function QueryPage() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <PageHeader icon={<SearchIcon />} title="New Query" />
       {/* Top row: form + module info */}
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 260px" }, gap: 2.5, alignItems: "start" }}>
         {/* Query form */}

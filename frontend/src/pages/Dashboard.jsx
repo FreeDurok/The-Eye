@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/DashboardOutlined";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -24,6 +25,7 @@ import { listCases } from "../api/cases.js";
 import { getModuleBreakdown, getOverview, getTimeline } from "../api/stats.js";
 import { listQueries } from "../api/queries.js";
 import useAsyncData from "../hooks/useAsyncData.js";
+import PageHeader from "../components/common/PageHeader.jsx";
 
 const MONO = "'IBM Plex Mono', monospace";
 const MODULE_COLORS = ["#00d4ff", "#a6e3a1", "#cba6f7", "#fab387"];
@@ -71,6 +73,7 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <PageHeader icon={<DashboardIcon />} title="Dashboard" />
       {/* Stats */}
       <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 1.5 }}>
         {overview.loading ? (

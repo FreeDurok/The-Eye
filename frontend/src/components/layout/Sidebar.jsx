@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Toolbar from "@mui/material/Toolbar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -13,6 +12,7 @@ import HistoryIcon from "@mui/icons-material/HistoryOutlined";
 import FileDownloadIcon from "@mui/icons-material/FileDownloadOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
+import logoSvg from "../../assets/logo-sidebar.svg";
 
 const SIDEBAR_WIDTH = 200;
 
@@ -34,15 +34,43 @@ export default function Sidebar() {
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: SIDEBAR_WIDTH,
-          bgcolor: "background.paper",
+          bgcolor: "#0d1117",
           boxSizing: "border-box",
+          borderRight: 1,
+          borderColor: "divider",
         },
       }}
     >
-      <Toolbar variant="dense" />
+      {/* Brand */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          pl: 2,
+          gap: 1,
+          height: 48,
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
+        <img src={logoSvg} alt="The Eye" width={44} height={34} />
+        <Typography
+          sx={{
+            fontFamily: "'Orbitron', sans-serif",
+            fontWeight: 500,
+            fontSize: "0.88rem",
+            color: "primary.main",
+            letterSpacing: "0.1em",
+            textShadow: "0 0 10px rgba(0,212,255,0.3)",
+          }}
+        >
+          The Eye
+        </Typography>
+      </Box>
 
       {/* Nav */}
-      <List sx={{ px: 1, pt: 1, flex: 1 }}>
+      <List sx={{ px: 1, pt: 1.5, flex: 1 }}>
         {NAV_ITEMS.map(({ to, label, icon }) => (
           <ListItemButton
             key={to}
@@ -56,7 +84,10 @@ export default function Sidebar() {
               color: "text.secondary",
               "&.active": {
                 color: "primary.main",
-                bgcolor: "action.hover",
+                bgcolor: "rgba(0,212,255,0.08)",
+              },
+              "&:hover": {
+                bgcolor: "rgba(255,255,255,0.04)",
               },
             }}
           >

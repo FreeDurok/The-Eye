@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PageHeader from "../components/common/PageHeader.jsx";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -132,6 +133,8 @@ export default function ExportPage() {
   })();
 
   return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <PageHeader icon={<FileDownloadIcon />} title="Export" />
     <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "320px 1fr" }, gap: 2.5, alignItems: "start" }}>
       {/* Left panel */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -332,6 +335,7 @@ export default function ExportPage() {
           </TableContainer>
         )}
       </Paper>
+    </Box>
     </Box>
   );
 }

@@ -20,6 +20,7 @@ import UploadIcon from "@mui/icons-material/UploadFileOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
 import { createCase, importCase, listCases } from "../api/cases.js";
 import useUiStore from "../store/uiStore.js";
+import PageHeader from "../components/common/PageHeader.jsx";
 
 const MONO = "'IBM Plex Mono', monospace";
 
@@ -105,6 +106,7 @@ export default function CasesPage() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <PageHeader icon={<FolderIcon />} title="Cases" />
       {/* Toolbar — always visible */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

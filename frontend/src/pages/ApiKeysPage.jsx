@@ -7,7 +7,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/RefreshOutlined";
+import KeyIcon from "@mui/icons-material/KeyOutlined";
 import { getApiKeyStatus } from "../api/apiKeys.js";
+import PageHeader from "../components/common/PageHeader.jsx";
 
 const MONO = "'IBM Plex Mono', monospace";
 
@@ -45,6 +47,7 @@ export default function ApiKeysPage() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <PageHeader icon={<KeyIcon />} title="API Keys" />
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Typography variant="body2" color="text.secondary">
           API keys are read from environment variables. Restart the backend after changes.

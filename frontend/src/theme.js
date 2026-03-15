@@ -35,7 +35,7 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: "'IBM Plex Sans', sans-serif",
+    fontFamily: "'Titillium Web', sans-serif",
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 600,

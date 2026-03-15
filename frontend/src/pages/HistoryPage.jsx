@@ -21,6 +21,8 @@ import { listModules } from "../api/modules.js";
 import { deleteQuery, listQueries } from "../api/queries.js";
 import useAsyncData from "../hooks/useAsyncData.js";
 import useUiStore from "../store/uiStore.js";
+import HistoryIcon from "@mui/icons-material/HistoryOutlined";
+import PageHeader from "../components/common/PageHeader.jsx";
 
 const MONO = "'IBM Plex Mono', monospace";
 const PAGE_SIZE = 20;
@@ -80,6 +82,7 @@ export default function HistoryPage() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <PageHeader icon={<HistoryIcon />} title="Query History" />
       {/* Toolbar — always visible */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Typography variant="body2" color="text.secondary">
