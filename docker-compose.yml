@@ -46,6 +46,7 @@ services:
       API_PROXY_TARGET: http://backend:8000
     volumes:
       - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
       - ./frontend/index.html:/app/index.html
     depends_on:
       - backend

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Eye shape -->
+  <path d="M 26,256 Q 140,100 256,100 Q 372,100 486,256 Q 372,412 256,412 Q 140,412 26,256 Z"
+        fill="none" stroke="#00d4ff" stroke-width="5"/>
+
+  <!-- Iris -->
+  <circle cx="256" cy="256" r="90" fill="none" stroke="#00d4ff" stroke-width="4" opacity="0.7"/>
+  <circle cx="256" cy="256" r="70" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- Pupil -->
+  <circle cx="256" cy="256" r="40" fill="#00d4ff" opacity="0.85"/>
+
+  <!-- Light reflection -->
+  <ellipse cx="238" cy="240" rx="10" ry="8" fill="white" opacity="0.4" transform="rotate(-20,238,240)"/>
+
+  <!-- Corner brackets -->
+  <g stroke="#00d4ff" stroke-width="3" fill="none" opacity="0.5">
+    <path d="M 80,160 L 80,135 L 105,135"/>
+    <path d="M 432,160 L 432,135 L 407,135"/>
+    <path d="M 80,352 L 80,377 L 105,377"/>
+    <path d="M 432,352 L 432,377 L 407,377"/>
+  </g>
+</svg>

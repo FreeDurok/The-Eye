@@ -13,9 +13,8 @@ import HistoryIcon from "@mui/icons-material/HistoryOutlined";
 import FileDownloadIcon from "@mui/icons-material/FileDownloadOutlined";
 import FolderIcon from "@mui/icons-material/FolderOutlined";
 import KeyIcon from "@mui/icons-material/KeyOutlined";
-import VisibilityIcon from "@mui/icons-material/VisibilityOutlined";
 
-const SIDEBAR_WIDTH = 220;
+const SIDEBAR_WIDTH = 200;
 
 const NAV_ITEMS = [
   { to: "/",         label: "Dashboard",  icon: <DashboardIcon fontSize="small" /> },
@@ -41,24 +40,9 @@ export default function Sidebar() {
       }}
     >
       <Toolbar variant="dense" />
-      {/* Brand */}
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 2, py: 1.5 }}>
-        <VisibilityIcon sx={{ color: "primary.main", fontSize: 22 }} />
-        <Typography
-          sx={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontWeight: 500,
-            fontSize: "0.95rem",
-            color: "primary.main",
-            letterSpacing: "0.05em",
-          }}
-        >
-          The Eye
-        </Typography>
-      </Box>
 
       {/* Nav */}
-      <List sx={{ px: 1, flex: 1 }}>
+      <List sx={{ px: 1, pt: 1, flex: 1 }}>
         {NAV_ITEMS.map(({ to, label, icon }) => (
           <ListItemButton
             key={to}

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="70%" stop-color="#0099cc"/>
+      <stop offset="100%" stop-color="#006688"/>
+    </radialGradient>
+    <radialGradient id="pupil" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="80%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#111820"/>
+    </radialGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer glow -->
+  <ellipse cx="256" cy="256" rx="230" ry="140" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.15"/>
+  <ellipse cx="256" cy="256" rx="245" ry="155" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.08"/>
+
+  <!-- Eye shape - outer -->
+  <path d="M 26,256 Q 140,100 256,100 Q 372,100 486,256 Q 372,412 256,412 Q 140,412 26,256 Z"
+        fill="#111820" stroke="#00d4ff" stroke-width="3"/>
+
+  <!-- Eye shape - inner shadow -->
+  <path d="M 50,256 Q 150,125 256,125 Q 362,125 462,256 Q 362,387 256,387 Q 150,387 50,256 Z"
+        fill="#0a0e14" opacity="0.4"/>
+
+  <!-- Iris outer ring -->
+  <circle cx="256" cy="256" r="95" fill="url(#iris)" opacity="0.9"/>
+
+  <!-- Iris detail rings -->
+  <circle cx="256" cy="256" r="85" fill="none" stroke="#00b8d9" stroke-width="1" opacity="0.4"/>
+  <circle cx="256" cy="256" r="70" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Iris texture lines -->
+  <g opacity="0.15" stroke="#00ffff" stroke-width="0.8">
+    <line x1="256" y1="161" x2="256" y2="200"/>
+    <line x1="256" y1="312" x2="256" y2="351"/>
+    <line x1="161" y1="256" x2="200" y2="256"/>
+    <line x1="312" y1="256" x2="351" y2="256"/>
+    <line x1="190" y1="190" x2="215" y2="215"/>
+    <line x1="297" y1="297" x2="322" y2="322"/>
+    <line x1="322" y1="190" x2="297" y2="215"/>
+    <line x1="190" y1="322" x2="215" y2="297"/>
+  </g>
+
+  <!-- Pupil -->
+  <circle cx="256" cy="256" r="42" fill="url(#pupil)"/>
+
+  <!-- Pupil inner ring -->
+  <circle cx="256" cy="256" r="42" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+
+  <!-- Light reflection -->
+  <ellipse cx="236" cy="236" rx="12" ry="10" fill="white" opacity="0.25" transform="rotate(-25,236,236)"/>
+  <ellipse cx="275" cy="270" rx="5" ry="4" fill="white" opacity="0.12"/>
+
+  <!-- Scan lines effect (OSINT/tech feel) -->
+  <g opacity="0.06" stroke="#00d4ff" stroke-width="0.5">
+    <line x1="26" y1="220" x2="486" y2="220"/>
+    <line x1="26" y1="240" x2="486" y2="240"/>
+    <line x1="26" y1="260" x2="486" y2="260"/>
+    <line x1="26" y1="280" x2="486" y2="280"/>
+    <line x1="26" y1="300" x2="486" y2="300"/>
+  </g>
+
+  <!-- Corner brackets (tech/targeting feel) -->
+  <g stroke="#00d4ff" stroke-width="2" fill="none" opacity="0.4">
+    <!-- Top-left -->
+    <path d="M 80,160 L 80,140 L 100,140"/>
+    <!-- Top-right -->
+    <path d="M 432,160 L 432,140 L 412,140"/>
+    <!-- Bottom-left -->
+    <path d="M 80,352 L 80,372 L 100,372"/>
+    <!-- Bottom-right -->
+    <path d="M 432,352 L 432,372 L 412,372"/>
+  </g>
+</svg>
