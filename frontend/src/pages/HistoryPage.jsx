@@ -22,7 +22,9 @@ import { deleteQuery, listQueries } from "../api/queries.js";
 import useAsyncData from "../hooks/useAsyncData.js";
 import useUiStore from "../store/uiStore.js";
 import HistoryIcon from "@mui/icons-material/HistoryOutlined";
+import UploadFileIcon from "@mui/icons-material/UploadFileOutlined";
 import PageHeader from "../components/common/PageHeader.jsx";
+import ImportDialog from "../components/import/ImportDialog.jsx";
 
 const MONO = "'IBM Plex Mono', monospace";
 const PAGE_SIZE = 20;
@@ -42,6 +44,7 @@ export default function HistoryPage() {
   const showToast = useUiStore((s) => s.showToast);
   const [page, setPage] = useState(1);
   const [moduleFilter, setModuleFilter] = useState("");
+  const [importOpen, setImportOpen] = useState(false);
 
   const modulesData = useAsyncData(() => listModules());
 
@@ -88,18 +91,28 @@ export default function HistoryPage() {
         <Typography variant="body2" color="text.secondary">
           {loading ? <Skeleton width={80} sx={{ display: "inline-block" }} /> : `${total} total queries`}
         </Typography>
-        <Select
-          size="small"
-          value={moduleFilter}
-          onChange={(e) => { setModuleFilter(e.target.value); setPage(1); }}
-          displayEmpty
-          sx={{ minWidth: 150 }}
-        >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<UploadFileIcon />}
+            onClick={() => setImportOpen(true)}
+          >
+            Import
+          </Button>
+          <Select
+            size="small"
+            value={moduleFilter}
+            onChange={(e) => { setModuleFilter(e.target.value); setPage(1); }}
+            displayEmpty
+            sx={{ minWidth: 150 }}
+          >
           <MenuItem value="">All modules</MenuItem>
           {(modulesData.data || []).map((m) => (
             <MenuItem key={m.name} value={m.name}>{m.display_name}</MenuItem>
           ))}
         </Select>
+        </Box>
       </Box>
 
       {error && <Alert severity="error">{error}</Alert>}
@@ -187,6 +200,15 @@ export default function HistoryPage() {
           </Button>
         </Box>
       )}
+
+      <ImportDialog
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onSuccess={(rec) => {
+          setImportOpen(false);
+          navigate(`/results/${rec.id}`);
+        }}
+      />
     </Box>
   );
 }

@@ -159,19 +159,40 @@ export default function CaseDetailPage() {
             variant="outlined"
           />
         </Box>
-        <Box sx={{ display: "flex", gap: 0.5 }}>
-          <IconButton size="small" onClick={() => { setEditName(caseData.name); setEditDesc(caseData.description || ""); setEditOpen(true); }} title="Edit">
-            <EditIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={handleToggleStatus} title={caseData.status === "open" ? "Close case" : "Reopen case"}>
-            {caseData.status === "open" ? <LockIcon fontSize="small" /> : <LockOpenIcon fontSize="small" />}
-          </IconButton>
-          <IconButton size="small" onClick={handleExport} title="Export">
-            <FileDownloadIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={() => setDeleteOpen(true)} title="Delete" color="error">
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<EditIcon />}
+            onClick={() => { setEditName(caseData.name); setEditDesc(caseData.description || ""); setEditOpen(true); }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={caseData.status === "open" ? <LockIcon /> : <LockOpenIcon />}
+            onClick={handleToggleStatus}
+          >
+            {caseData.status === "open" ? "Close" : "Reopen"}
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FileDownloadIcon />}
+            onClick={handleExport}
+          >
+            Export
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => setDeleteOpen(true)}
+          >
+            Delete
+          </Button>
         </Box>
       </Box>
 

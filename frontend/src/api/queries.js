@@ -16,3 +16,17 @@ export const getQuery = (id) =>
   client.get(`/queries/${id}`).then((r) => r.data);
 
 export const deleteQuery = (id) => client.delete(`/queries/${id}`);
+
+export const importFile = (file, query, module, caseId) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("query", query);
+  if (module) formData.append("module", module);
+  if (caseId) formData.append("case_id", caseId);
+  return client
+    .post("/queries/import", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      timeout: 120000,
+    })
+    .then((r) => r.data);
+};

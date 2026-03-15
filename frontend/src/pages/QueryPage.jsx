@@ -27,7 +27,9 @@ import { listModules } from "../api/modules.js";
 import { listQueries, runQuery } from "../api/queries.js";
 import useUiStore from "../store/uiStore.js";
 import PageHeader from "../components/common/PageHeader.jsx";
+import ImportDialog from "../components/import/ImportDialog.jsx";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
+import UploadFileIcon from "@mui/icons-material/UploadFileOutlined";
 
 const MONO = "'IBM Plex Mono', monospace";
 
@@ -51,6 +53,7 @@ export default function QueryPage() {
   const [query, setQuery] = useState("");
   const [maxResults, setMaxResults] = useState(100);
   const [running, setRunning] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [error, setError] = useState(null);
 
   const [recentQueries, setRecentQueries] = useState([]);
@@ -206,7 +209,14 @@ export default function QueryPage() {
 
             {error && <Alert severity="error">{error}</Alert>}
 
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+              <Button
+                variant="outlined"
+                startIcon={<UploadFileIcon />}
+                onClick={() => setImportOpen(true)}
+              >
+                Import File
+              </Button>
               <Button
                 type="submit"
                 variant="contained"
@@ -316,6 +326,17 @@ export default function QueryPage() {
           </Table>
         )}
       </Paper>
+
+      <ImportDialog
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onSuccess={(rec) => {
+          setImportOpen(false);
+          navigate(`/results/${rec.id}`);
+        }}
+        defaultModule={selectedModule}
+        defaultCaseId={selectedCase}
+      />
     </Box>
   );
 }
