@@ -64,7 +64,9 @@ export default function ResultPage() {
           />
           {record.result && (
             <Typography variant="body2" color="text.disabled">
-              {record.result.result_count} results
+              {record.result.total_available && record.result.total_available !== record.result.result_count
+                ? `${record.result.result_count} / ${record.result.total_available} results`
+                : `${record.result.result_count} results`}
             </Typography>
           )}
           {record.duration_ms != null && (
@@ -94,8 +96,8 @@ export default function ResultPage() {
 
       {/* Data explorer */}
       {record.result?.raw_data && (
-        <Paper sx={{ p: 2, minHeight: 400 }}>
-          <DataExplorer data={record.result.raw_data} />
+        <Paper sx={{ p: 2 }}>
+          <DataExplorer data={record.result.raw_data} module={record.module} />
         </Paper>
       )}
     </Box>

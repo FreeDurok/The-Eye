@@ -14,3 +14,5 @@ export const listQueries = (page = 1, pageSize = 20, module = null) => {
 
 export const getQuery = (id) =>
   client.get(`/queries/${id}`).then((r) => r.data);
+
+export const deleteQuery = (id) => client.delete(`/queries/${id}`);

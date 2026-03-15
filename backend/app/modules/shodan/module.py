@@ -102,6 +102,7 @@ class ShodanModule(OsintModule):
                 data={"total": total, "matches": all_matches},
                 error=None,
                 result_count=len(all_matches),
+                total_available=total,
                 duration_ms=duration,
             )
 
@@ -111,16 +112,16 @@ class ShodanModule(OsintModule):
                 detail = exc.response.json().get("error", str(exc))
             except Exception:
                 detail = str(exc)
-            # Return partial results if we have some
             if all_matches:
                 return QueryResult(
                     success=True,
                     data={"total": total, "matches": all_matches},
                     error=f"Partial results ({len(all_matches)} fetched): {detail}",
                     result_count=len(all_matches),
+                    total_available=total,
                     duration_ms=duration,
                 )
-            return QueryResult(success=False, data=None, error=detail, result_count=0, duration_ms=duration)
+            return QueryResult(success=False, data=None, error=detail, result_count=0, total_available=0, duration_ms=duration)
 
         except Exception as exc:
             duration = int((time.monotonic() - start) * 1000)
@@ -130,6 +131,7 @@ class ShodanModule(OsintModule):
                     data={"total": total, "matches": all_matches},
                     error=f"Partial results ({len(all_matches)} fetched): {exc}",
                     result_count=len(all_matches),
+                    total_available=total,
                     duration_ms=duration,
                 )
-            return QueryResult(success=False, data=None, error=str(exc), result_count=0, duration_ms=duration)
+            return QueryResult(success=False, data=None, error=str(exc), result_count=0, total_available=0, duration_ms=duration)

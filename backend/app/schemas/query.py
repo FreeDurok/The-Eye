@@ -18,6 +18,7 @@ class QueryResultOut(BaseModel):
     id: uuid.UUID
     raw_data: dict[str, Any]
     result_count: int | None
+    total_available: int | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -43,6 +44,7 @@ class QueryResultSummary(BaseModel):
     """Result metadata only — excludes raw_data."""
     id: uuid.UUID
     result_count: int | None
+    total_available: int | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

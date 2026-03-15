@@ -194,7 +194,7 @@ export default function Dashboard() {
                   <TableCell>Module</TableCell>
                   <TableCell>Query</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Results</TableCell>
+                  <TableCell>Fetched / Total</TableCell>
                   <TableCell>Time</TableCell>
                 </TableRow>
               </TableHead>
@@ -210,7 +210,13 @@ export default function Dashboard() {
                         color={q.status === "success" ? "success" : q.status === "error" ? "error" : "warning"}
                         variant="outlined" />
                     </TableCell>
-                    <TableCell sx={{ fontFamily: MONO }}>{q.result?.result_count ?? "—"}</TableCell>
+                    <TableCell sx={{ fontFamily: MONO }}>
+                      {q.result?.result_count != null
+                        ? q.result.total_available && q.result.total_available !== q.result.result_count
+                          ? `${q.result.result_count} / ${q.result.total_available}`
+                          : q.result.result_count
+                        : "—"}
+                    </TableCell>
                     <TableCell sx={{ fontFamily: MONO, color: "text.disabled" }}>
                       {q.duration_ms != null ? `${q.duration_ms}ms` : "—"}
                     </TableCell>

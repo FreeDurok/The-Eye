@@ -34,3 +34,10 @@ async def get_query(query_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
     if record is None:
         raise HTTPException(status_code=404, detail="Query not found")
     return record
+
+
+@router.delete("/{query_id}", status_code=204)
+async def delete_query(query_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    deleted = await query_service.delete_query(query_id, db)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Query not found")

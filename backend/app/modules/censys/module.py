@@ -109,6 +109,7 @@ class CensysModule(OsintModule):
                 data={"total": total, "hits": all_hits},
                 error=None,
                 result_count=len(all_hits),
+                total_available=total,
                 duration_ms=duration,
             )
 
@@ -124,9 +125,10 @@ class CensysModule(OsintModule):
                     data={"total": total, "hits": all_hits},
                     error=f"Partial results ({len(all_hits)} fetched): {detail}",
                     result_count=len(all_hits),
+                    total_available=total,
                     duration_ms=duration,
                 )
-            return QueryResult(success=False, data=None, error=detail, result_count=0, duration_ms=duration)
+            return QueryResult(success=False, data=None, error=detail, result_count=0, total_available=0, duration_ms=duration)
 
         except Exception as exc:
             duration = int((time.monotonic() - start) * 1000)
@@ -136,6 +138,7 @@ class CensysModule(OsintModule):
                     data={"total": total, "hits": all_hits},
                     error=f"Partial results ({len(all_hits)} fetched): {exc}",
                     result_count=len(all_hits),
+                    total_available=total,
                     duration_ms=duration,
                 )
-            return QueryResult(success=False, data=None, error=str(exc), result_count=0, duration_ms=duration)
+            return QueryResult(success=False, data=None, error=str(exc), result_count=0, total_available=0, duration_ms=duration)

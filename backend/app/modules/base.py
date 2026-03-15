@@ -18,7 +18,8 @@ class QueryResult:
     success: bool
     data: dict[str, Any] | None
     error: str | None
-    result_count: int
+    result_count: int       # how many results were actually fetched
+    total_available: int    # how many results matched on the API side
     duration_ms: int
 
 

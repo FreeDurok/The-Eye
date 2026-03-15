@@ -19,10 +19,12 @@ class CaseUpdate(BaseModel):
 
 
 class CaseQuerySummary(BaseModel):
+    id: uuid.UUID | None = None  # None for imported queries without an id
     module: str
     query: str
     status: str
     result_count: int | None
+    total_available: int | None = None
     duration_ms: int | None
     created_at: datetime
     result_file: str | None = None  # relative path inside ZIP (e.g. "results/abc.json")

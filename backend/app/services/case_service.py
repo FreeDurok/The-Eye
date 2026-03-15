@@ -282,10 +282,12 @@ def _to_case_detail(case: Case) -> CaseDetailOut:
         query_count=len(case.queries) if case.queries else 0,
         queries=[
             CaseQuerySummary(
+                id=q.id,
                 module=q.module,
                 query=q.query,
                 status=q.status,
                 result_count=q.result.result_count if q.result else None,
+                total_available=q.result.total_available if q.result else None,
                 duration_ms=q.duration_ms,
                 created_at=q.created_at,
             )

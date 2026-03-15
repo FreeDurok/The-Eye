@@ -14,7 +14,7 @@ from app.schemas.query import (
     QueryResultOut,
     QueryRequest,
 )
-from app.services.data_store import load_result_data, save_result_data
+from app.services.data_store import delete_result_data, load_result_data, save_result_data
 
 
 async def run_query(request: QueryRequest, db: AsyncSession) -> QueryRecordOut:
@@ -52,6 +52,7 @@ async def run_query(request: QueryRequest, db: AsyncSession) -> QueryRecordOut:
             query_record_id=record.id,
             data_path=data_path,
             result_count=module_result.result_count,
+            total_available=module_result.total_available,
         )
         db.add(query_result)
 
@@ -85,6 +86,7 @@ async def list_queries(
         selectinload(QueryRecord.result).load_only(
             QueryResult.id,
             QueryResult.result_count,
+            QueryResult.total_available,
             QueryResult.created_at,
         )
     )
@@ -112,6 +114,26 @@ async def list_queries(
     )
 
 
+async def delete_query(query_id: uuid.UUID, db: AsyncSession) -> bool:
+    """Delete a query record, its result metadata, and the result file on disk."""
+    stmt = (
+        select(QueryRecord)
+        .options(selectinload(QueryRecord.result))
+        .where(QueryRecord.id == query_id)
+    )
+    record = await db.scalar(stmt)
+    if record is None:
+        return False
+
+    # Delete result file from disk
+    if record.result and record.result.data_path:
+        delete_result_data(record.result.data_path)
+
+    await db.delete(record)  # cascade deletes QueryResult
+    await db.commit()
+    return True
+
+
 def _build_record_out(record: QueryRecord) -> QueryRecordOut:
     """Build a full QueryRecordOut, loading raw_data from filesystem."""
     result_out = None
@@ -121,6 +143,7 @@ def _build_record_out(record: QueryRecord) -> QueryRecordOut:
             id=record.result.id,
             raw_data=raw_data or {},
             result_count=record.result.result_count,
+            total_available=record.result.total_available,
             created_at=record.result.created_at,
         )
 

@@ -4,6 +4,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
@@ -13,15 +14,18 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { listModules } from "../api/modules.js";
-import { listQueries } from "../api/queries.js";
+import { deleteQuery, listQueries } from "../api/queries.js";
 import useAsyncData from "../hooks/useAsyncData.js";
+import useUiStore from "../store/uiStore.js";
 
 const MONO = "'IBM Plex Mono', monospace";
 const PAGE_SIZE = 20;
 
-function SkeletonRows({ count = 8, cols = 6 }) {
+function SkeletonRows({ count = 8, cols = 7 }) {
   return Array.from({ length: count }).map((_, i) => (
     <TableRow key={i}>
       {Array.from({ length: cols }).map((_, j) => (
@@ -33,6 +37,7 @@ function SkeletonRows({ count = 8, cols = 6 }) {
 
 export default function HistoryPage() {
   const navigate = useNavigate();
+  const showToast = useUiStore((s) => s.showToast);
   const [page, setPage] = useState(1);
   const [moduleFilter, setModuleFilter] = useState("");
 
@@ -58,6 +63,18 @@ export default function HistoryPage() {
   };
 
   useEffect(() => { load(page, moduleFilter); }, [page, moduleFilter]);
+
+  const handleDelete = async (e, queryId) => {
+    e.stopPropagation();
+    try {
+      await deleteQuery(queryId);
+      setRecords((prev) => prev.filter((r) => r.id !== queryId));
+      setTotal((prev) => prev - 1);
+      showToast("Query deleted", "success");
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+  };
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -92,9 +109,10 @@ export default function HistoryPage() {
               <TableCell>Module</TableCell>
               <TableCell>Query</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Results</TableCell>
+              <TableCell>Fetched / Total</TableCell>
               <TableCell>Duration</TableCell>
               <TableCell>Date</TableCell>
+              <TableCell sx={{ width: 48 }} />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,7 +120,7 @@ export default function HistoryPage() {
               <SkeletonRows />
             ) : records.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} sx={{ textAlign: "center", py: 4 }}>
+                <TableCell colSpan={7} sx={{ textAlign: "center", py: 4 }}>
                   <Typography color="text.disabled">No queries found.</Typography>
                   <Button variant="outlined" size="small" sx={{ mt: 1 }} onClick={() => navigate("/query")}>
                     Run your first query
@@ -111,7 +129,7 @@ export default function HistoryPage() {
               </TableRow>
             ) : (
               records.map((r) => (
-                <TableRow key={r.id} hover onClick={() => navigate(`/results/${r.id}`)}>
+                <TableRow key={r.id} hover sx={{ cursor: "pointer" }} onClick={() => navigate(`/results/${r.id}`)}>
                   <TableCell sx={{ fontFamily: MONO, color: "primary.main" }}>{r.module}</TableCell>
                   <TableCell sx={{ fontFamily: MONO, fontSize: "0.78rem", maxWidth: 280, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {r.query}
@@ -121,12 +139,29 @@ export default function HistoryPage() {
                       color={r.status === "success" ? "success" : r.status === "error" ? "error" : "warning"}
                       variant="outlined" />
                   </TableCell>
-                  <TableCell sx={{ fontFamily: MONO }}>{r.result?.result_count ?? "—"}</TableCell>
+                  <TableCell sx={{ fontFamily: MONO }}>
+                      {r.result?.result_count != null
+                        ? r.result.total_available && r.result.total_available !== r.result.result_count
+                          ? `${r.result.result_count} / ${r.result.total_available}`
+                          : r.result.result_count
+                        : "—"}
+                    </TableCell>
                   <TableCell sx={{ fontFamily: MONO, color: "text.disabled" }}>
                     {r.duration_ms != null ? `${r.duration_ms}ms` : "—"}
                   </TableCell>
                   <TableCell sx={{ fontFamily: MONO, fontSize: "0.72rem", color: "text.disabled" }}>
                     {new Date(r.created_at).toLocaleString()}
+                  </TableCell>
+                  <TableCell sx={{ p: 0.5 }}>
+                    <Tooltip title="Delete query and results">
+                      <IconButton
+                        size="small"
+                        onClick={(e) => handleDelete(e, r.id)}
+                        sx={{ color: "text.disabled", "&:hover": { color: "error.main" } }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))

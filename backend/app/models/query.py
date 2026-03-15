@@ -55,6 +55,7 @@ class QueryResult(Base):
     )
     data_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
     result_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    total_available: Mapped[int | None] = mapped_column(Integer, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

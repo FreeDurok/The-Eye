@@ -289,14 +289,14 @@ export default function ExportPage() {
       </Box>
 
       {/* Right: preview */}
-      <Paper sx={{ p: 2, minHeight: 300 }}>
+      <Paper sx={{ p: 2, minHeight: 300, minWidth: 0, overflow: "hidden" }}>
         <Typography variant="overline" sx={{ display: "block", mb: 1.5 }}>Preview</Typography>
         {previewRows.length === 0 ? (
           <Typography variant="body2" color="text.disabled">
             Select a result and fields to see a preview.
           </Typography>
         ) : (
-          <TableContainer sx={{ maxHeight: 400 }}>
+          <TableContainer sx={{ maxHeight: 400, overflowX: "auto" }}>
             <Table size="small" stickyHeader>
               <TableHead>
                 <TableRow>

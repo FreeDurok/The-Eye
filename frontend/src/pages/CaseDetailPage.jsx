@@ -25,7 +25,9 @@ import LockIcon from "@mui/icons-material/LockOutlined";
 import LockOpenIcon from "@mui/icons-material/LockOpenOutlined";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
+import Tooltip from "@mui/material/Tooltip";
 import { deleteCase, exportCase, getCase, updateCase } from "../api/cases.js";
+import { deleteQuery } from "../api/queries.js";
 import useUiStore from "../store/uiStore.js";
 
 const MONO = "'IBM Plex Mono', monospace";
@@ -126,6 +128,20 @@ export default function CaseDetailPage() {
     }
   };
 
+  const handleDeleteQuery = async (queryId) => {
+    try {
+      await deleteQuery(queryId);
+      setCaseData((prev) => ({
+        ...prev,
+        queries: prev.queries.filter((q) => q.id !== queryId),
+        query_count: prev.query_count - 1,
+      }));
+      showToast("Query deleted", "success");
+    } catch (e) {
+      showToast(e.message, "error");
+    }
+  };
+
   if (loading) return <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}><CircularProgress size={32} /></Box>;
   if (error) return <Alert severity="error">{error}</Alert>;
   if (!caseData) return <Alert severity="warning">Case not found.</Alert>;
@@ -217,14 +233,16 @@ export default function CaseDetailPage() {
                 <TableCell>Module</TableCell>
                 <TableCell>Query</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Results</TableCell>
+                <TableCell>Fetched / Total</TableCell>
                 <TableCell>Duration</TableCell>
                 <TableCell>Date</TableCell>
+                <TableCell sx={{ width: 48 }} />
               </TableRow>
             </TableHead>
             <TableBody>
-              {caseData.queries.map((q, i) => (
-                <TableRow key={i} hover>
+              {caseData.queries.map((q) => (
+                <TableRow key={q.id || q.created_at} hover sx={{ cursor: q.id ? "pointer" : "default" }}
+                  onClick={() => q.id && navigate(`/results/${q.id}`)}>
                   <TableCell sx={{ fontFamily: MONO, color: "primary.main" }}>{q.module}</TableCell>
                   <TableCell sx={{ fontFamily: MONO, fontSize: "0.78rem", maxWidth: 280, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {q.query}
@@ -237,12 +255,31 @@ export default function CaseDetailPage() {
                       variant="outlined"
                     />
                   </TableCell>
-                  <TableCell sx={{ fontFamily: MONO }}>{q.result_count ?? "—"}</TableCell>
+                  <TableCell sx={{ fontFamily: MONO }}>
+                      {q.result_count != null
+                        ? q.total_available && q.total_available !== q.result_count
+                          ? `${q.result_count} / ${q.total_available}`
+                          : q.result_count
+                        : "—"}
+                    </TableCell>
                   <TableCell sx={{ fontFamily: MONO, color: "text.disabled" }}>
                     {q.duration_ms != null ? `${q.duration_ms}ms` : "—"}
                   </TableCell>
                   <TableCell sx={{ fontFamily: MONO, fontSize: "0.72rem", color: "text.disabled" }}>
                     {new Date(q.created_at).toLocaleString()}
+                  </TableCell>
+                  <TableCell sx={{ p: 0.5 }}>
+                    {q.id && (
+                      <Tooltip title="Delete query and results">
+                        <IconButton
+                          size="small"
+                          onClick={(e) => { e.stopPropagation(); handleDeleteQuery(q.id); }}
+                          sx={{ color: "text.disabled", "&:hover": { color: "error.main" } }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
